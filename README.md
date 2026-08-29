@@ -28,11 +28,18 @@ Only the gateway identify payload is modified — REST requests and their
 ## Installation
 
 Requires the latest Revenge. In Revenge: **Settings → Plugins → Install a plugin** (the + /
-Install button) and paste:
+Install button) and paste one of these (trailing slash matters):
 
 ```
-https://raw.githubusercontent.com/easy-k03/Platform-spoof/main/dist/vendetta/revenge.platformspoofer/
+https://easy-k03.github.io/Platform-spoof/vendetta/revenge.platformspoofer/
 ```
+
+```
+https://cdn.jsdelivr.net/gh/easy-k03/Platform-spoof@main/dist/vendetta/revenge.platformspoofer/
+```
+
+The jsDelivr URL is a CDN mirror — use it if `github.io` or `raw.githubusercontent.com` are
+unreachable from your network.
 
 You will get an "unproxied source" confirmation — tap **Continue** (you are trusting your own
 repo). The plugin then appears in the Plugins list, where you can enable it and open its
