@@ -133,6 +133,31 @@ for (const plug of await readdir("./plugins")) {
             name: "plugin"
         });
 
+        // Release builds of Revenge only expose the Vendetta plugin installer
+        // ("Install a plugin"), which expects a plugin directory holding a
+        // polymanifest (with a hash field) and an index.js that evaluates to
+        // an expression (it is embedded as `vendetta=>{return <js>}`).
+        // The Bunny repo.json format used by dist/ is only consumable by dev
+        // builds, so we also emit a Vendetta-compatible variant that reuses
+        // the Bunny build and adapts the instance (start/stop/SettingsComponent
+        // -> onLoad/onUnload/settings).
+        if (isProduction) {
+            const built = (await readFile(outPath)).toString();
+            const vdJs = `(function(){var bunny=Object.assign({},window.bunny,{plugin:{createStorage:function(){return window.bunny.api.storage.createStorage("plugins/storage/${manifest.id}.json")}}});var definePlugin=function(p){return p};${built}var _i=plugin&&plugin.default?plugin.default:plugin;return{onLoad:function(){_i&&_i.start&&_i.start()},onUnload:function(){_i&&_i.stop&&_i.stop()},settings:_i&&_i.SettingsComponent}})()`;
+
+            const vdManifest = {
+                name: manifest.display.name,
+                description: manifest.display.description,
+                authors: manifest.display.authors,
+                main: "index.js",
+                hash: manifest.version
+            };
+
+            await mkdir(`./dist/vendetta/${manifest.id}`, { recursive: true });
+            await writeFile(`./dist/vendetta/${manifest.id}/index.js`, vdJs);
+            await writeFile(`./dist/vendetta/${manifest.id}/manifest.json`, JSON.stringify(vdManifest));
+        }
+
         await bundle.close();
     } catch (error) {
         if (error instanceof Error && error.name !== "RollupError") {

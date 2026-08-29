@@ -27,11 +27,19 @@ Only the gateway identify payload is modified — REST requests and their
 
 ## Installation
 
-Requires the latest Revenge. Install from a repository:
+Requires the latest Revenge. In Revenge: **Settings → Plugins → Install a plugin** (the + /
+Install button) and paste:
 
-1. Push this repo to GitHub (the included workflow publishes `dist/` to GitHub Pages).
-2. In Revenge: Settings → Plugins → Install from URL, and add
-   `https://<your-username>.github.io/<repo-name>/repo.json`.
+```
+https://raw.githubusercontent.com/easy-k03/Platform-spoof/main/dist/vendetta/revenge.platformspoofer/
+```
+
+You will get an "unproxied source" confirmation — tap **Continue** (you are trusting your own
+repo). The plugin then appears in the Plugins list, where you can enable it and open its
+settings to pick a platform.
+
+A Bunny repository build (`dist/repo.json` + `dist/builds/`) is also produced for loaders that
+support adding plugin repositories.
 
 For local development:
 
