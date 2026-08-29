@@ -1,5 +1,5 @@
 import { useObservable } from "@bunny/api/storage";
-import { TableRadioGroup, TableRadioRow, Text } from "@bunny/metro/common/components";
+import { TableRadioGroup, TableRadioRow, TableSwitchRow, Text } from "@bunny/metro/common/components";
 import { DEFAULT_PLATFORM, PLATFORM_PRESETS } from "./platforms";
 import { storage } from "./storage";
 
@@ -44,8 +44,14 @@ export default () => {
                     />
                 ))}
             </TableRadioGroup>
+            <TableSwitchRow
+                label="Spoof super properties"
+                subLabel="Also rewrite X-Super-Properties sent with REST requests"
+                value={storage.spoofSuperProperties ?? true}
+                onChange={value => (storage.spoofSuperProperties = value)}
+            />
             <Text variant="text-md/normal" color="TEXT_MUTED">
-                The platform is sent when Discord identifies with its gateway, so changes apply the next time a new session is created (usually after restarting the app).
+                The platform is sent when Discord identifies with its gateway, so changes apply the next time a new session is created. If nothing changes after restarting, Discord resumed its old session — force-stop the app for about a minute (or toggle airplane mode) and open it again. A toast confirms when a spoofed identify is sent.
             </Text>
         </ReactNative.ScrollView>
     );

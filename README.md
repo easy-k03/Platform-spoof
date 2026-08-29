@@ -22,8 +22,10 @@ you appear as:
 | iOS       | `Discord iOS` · iPhone                     |
 | Embedded  | `Discord Embedded` · Xbox                  |
 
-Only the gateway identify payload is modified — REST requests and their
+Only the gateway identify payload is modified by default — REST requests and their
 `X-Super-Properties` header are left untouched, so experiments and features are unaffected.
+(The "Spoof super properties" setting also rewrites super properties for a more complete
+spoof.)
 
 ## Installation
 
@@ -59,8 +61,15 @@ pnpm run typecheck
 
 ## Notes
 
-- The platform is only sent when Discord creates a new gateway session. After changing the
-  setting, restart the app (or wait for a reconnect that starts a fresh session) for it to apply.
+- The plugin hooks the gateway identify in three layers: the gateway session module's
+  identify function, Discord's `getSuperProperties`, and outgoing gateway WebSocket frames
+  (last-resort). Whichever layer catches the identify rewrites it; a toast confirms it fired.
+- The platform is only sent when Discord creates a new gateway session. If a restart doesn't
+  change anything, Discord resumed its previous session — force-stop the app for about a
+  minute (or toggle airplane mode) so the next start sends a fresh identify.
+- Verify the result under **Settings → Devices**: the new session should list the spoofed
+  platform (e.g. "Discord Client · Windows"). Your own client always shows your real
+  platform locally — check from the Devices list or another account.
 - RESUME payloads are not modified on purpose — Discord keeps the client info of the resumed
   session.
 

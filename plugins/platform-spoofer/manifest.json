@@ -2,7 +2,7 @@
     "spec": 3,
     "type": "plugin",
     "id": "revenge.platformspoofer",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "display": {
         "name": "Platform Spoofer",
         "description": "Spoof what platform or device you're on. Ported from Equicord's PlatformSpoofer.",
